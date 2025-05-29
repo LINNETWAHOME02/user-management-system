@@ -1,12 +1,19 @@
 import re
+from django.db import models
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
-class AppUser(User):
+class AppUser(AbstractUser):
 
-    class Meta:
-        proxy = True
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    ]
+
+    age = models.PositiveIntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
+
 
     def welcome_message(self):
         return f"Welcome, {self.username}! Your account was created successfully."

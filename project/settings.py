@@ -88,6 +88,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'user.AppUser'
+
 # For now allow any origin
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWS_CREDENTIALS = True
@@ -160,9 +162,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'assets'
-
-STATICFILES_DIRS = [BASE_DIR / 'user/assets']
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 # Settings for crispy
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'

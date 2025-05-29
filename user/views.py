@@ -1,5 +1,5 @@
-from django.contrib.auth import update_session_auth_hash
-from django.shortcuts import get_object_or_404
+from django.contrib.auth import update_session_auth_hash, authenticate
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
@@ -8,9 +8,8 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from user.forms import UserForm
 from user.serializer import *
-
-# Create your views here.
 
 ######################### USER REGISTRATION, LOG IN & LOG IN ##############################
 @api_view(['POST'])
@@ -126,15 +125,16 @@ def display_users(request):
     return Response(serializer.data)
 
 ############################### CHANGE PASSWORD ####################################
-@permission_classes([IsAuthenticated])
-@authentication_classes([TokenAuthentication])
 @api_view(['POST']) # POST to handle sensitive data since GET send data via the URL, which can be logged in
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def change_password(request):
     old_password = request.data.get('old_password')
     new_password = request.data.get('new_password')
     confirm_password = request.data.get('confirm_password')
 
     user = request.user
+    print(user)
 
     # Step 1: Authenticate with old password
     if not user.check_password(old_password):
@@ -148,7 +148,11 @@ def change_password(request):
     user.set_password(new_password)
     user.save()
 
-    # Step 4: Update session auth if you're using sessions (safe to include)
-    update_session_auth_hash(request, user)
-
     return Response({'message': 'Password changed successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def test_auth(request):
+    return Response({'message': f'You are authenticated as {request.user.username}'})
+
