@@ -65,29 +65,6 @@ MIDDLEWARE = [
 #     ],
 # }
 
-##################################### Password validation ######################################
-'''
-    Built-in, flexible system to validate passwords. It ensures:
-        - Password checks happen during registration, password change, and reset.
-        - No need to repeat logic manually in every model or form.
-        - It's extensible and production-grade.
-'''
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 8},
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
 AUTH_USER_MODEL = 'user.AppUser'
 
 # For now allow any origin
